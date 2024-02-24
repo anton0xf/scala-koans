@@ -3,22 +3,21 @@ package org.scalakoans
 import support.KoanSuite
 import support.BlankValues._
 
-
 class AboutOptions extends KoanSuite  {
 
   koan("Option can have one of two values - Some or None") {
     val someValue: Option[String] = Some("I am wrapped in something")
-    someValue.get should be(__)
+    someValue.get should be("I am wrapped in something")
 
     val nullValue: Option[String] = None
-    nullValue should be(__)
+    nullValue should be(None)
   }
 
   koan("Represent null with None because null is a bad idea") {
     val value1 = maybeItWillReturnSomething(true)
     val value2 = maybeItWillReturnSomething(false)
 
-    value1.get should be(__)
+    value1.get should be("Found value")
     intercept[java.util.NoSuchElementException] {
       value2.get
     }
@@ -28,20 +27,17 @@ class AboutOptions extends KoanSuite  {
     val value1 = maybeItWillReturnSomething(true)
     val value2 = maybeItWillReturnSomething(false)
 
-    value1 getOrElse "No value" should be(__)
-    value2 getOrElse "No value" should be(__)
-    value2 getOrElse {
-      "default function"
-    } should be(__)
-
+    value1 getOrElse "No value" should be("Found value")
+    value2 getOrElse "No value" should be("No value")
+    value2 getOrElse { "default function" } should be("default function")
   }
 
   koan("checking whether option has value") {
     val value1 = maybeItWillReturnSomething(true)
     val value2 = maybeItWillReturnSomething(false)
 
-    value1.isEmpty should be(__)
-    value2.isEmpty should be(__)
+    value1.isEmpty should be(false)
+    value2.isEmpty should be(true)
   }
 
   koan("Option can also be used with pattern matching") {
@@ -50,40 +46,41 @@ class AboutOptions extends KoanSuite  {
       case Some(v) => v
       case None => 0.0
     }
-    value should be(__)
+    value should be(20.0)
     val noValue: Option[Double] = None
     val value1 = noValue match {
       case Some(v) => v
       case None => 0.0
     }
-    value1 should be(__)
-
+    value1 should be(0.0)
   }
 
   koan("Option is more than just a replacement of null, its also a collection") {
     Some(10) map {
       _ + 10
-    } should be(__)
+    } should be(Some(20))
+
     Some(10) filter {
       _ == 10
-    } should be(__)
+    } should be(Some(10))
+
     Some(Some(10)) flatMap {
       _ map {
         _ + 10
       }
-    } should be(__)
+    } should be(Some(20))
 
     var newValue1 = 0
     Some(20) foreach {
       newValue1 = _
     }
-    newValue1 should be(__)
+    newValue1 should be(20)
 
     var newValue2 = 0
     None foreach {
       newValue2 = _
     }
-    newValue2 should be(__)
+    newValue2 should be(0)
   }
 
   koan("Using Option to avoid if checks for null") {
@@ -99,8 +96,8 @@ class AboutOptions extends KoanSuite  {
         null
       }
     }
-    makeFullName("Nilanjan", "Raychaudhuri") should be(__)
-    makeFullName("Nilanjan", null) should be(__)
+    makeFullName("Nilanjan", "Raychaudhuri") should be("Nilanjan Raychaudhuri")
+    makeFullName("Nilanjan", null) should be(null)
     //the pretty version
     def makeFullNamePrettyVersion(firstName: Option[String], lastName: Option[String]) = {
       firstName flatMap {
@@ -111,8 +108,8 @@ class AboutOptions extends KoanSuite  {
           }
       }
     }
-    makeFullNamePrettyVersion(Some("Nilanjan"), Some("Raychaudhuri")) should be(__)
-    makeFullNamePrettyVersion(Some("Nilanjan"), None) should be(__)
+    makeFullNamePrettyVersion(Some("Nilanjan"), Some("Raychaudhuri")) should be(Some("Nilanjan Raychaudhuri"))
+    makeFullNamePrettyVersion(Some("Nilanjan"), None) should be(None)
   }
 
   koan("Using in for comprehension") {
@@ -121,7 +118,7 @@ class AboutOptions extends KoanSuite  {
       someValue <- values
       value <- someValue
     } yield value
-    newValues should be(__)
+    newValues should be(List(10, 20, 15))
   }
 
   def maybeItWillReturnSomething(flag: Boolean): Option[String] = {
