@@ -125,6 +125,6 @@ class AboutHigherOrderFunctions extends KoanSuite  {
     val enchantress = new PokerTable("Enchantress", 15, Nil)
 
     val x = theTexas.isAvailable _
-    List(12, 2, 3, 4, 5, 6, 11, 44).filter(x)
+    List(12, 2, 3, 4, 5, 6, 11, 44).filter(x) should be(List(12, 11, 44))
   }
 }
